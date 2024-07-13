@@ -2,14 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Quote</title>
+    <title>Add quote</title>
 </head>
 <body>
-    <h1>Add a New Quote</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Quote</button>
-    </form>
+{% extends "quotes/base.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'quotes:add_quote' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label" for="quotes">Quote</label>
+        <input class="form-control" id="quotes" name="quote" placeholder="Enter quote" type="text">
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="author">Author</label>
+        <input class="form-control" id="Author" name="Author" placeholder="Enter author" type="text">
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="tags">Tags</label>
+        <input class="form-control" id="tags" name="tags" placeholder="Enter Tags" type="text">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+    {% endblock %}
 </body>
 </html>
