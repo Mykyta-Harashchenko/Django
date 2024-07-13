@@ -50,7 +50,7 @@ def add_quote(request):
             }
 
             quotes_collection.insert_one(quote_data)
-            return redirect(reverse('root'))
+            return redirect(reverse('quotes:root'))
     else:
         form = QuoteForm()
     return render(request, 'quotes/add_quote.html', {'form': form})
