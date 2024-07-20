@@ -13,15 +13,15 @@
     {% csrf_token %}
     <div class="mb-3">
         <label class="form-label" for="quotes">Quote</label>
-        <input class="form-control" id="quotes" name="quote" placeholder="Enter quote" type="text">
+       {{form.quote}}
     </div>
     <div class="mb-3">
         <label class="form-label" for="author">Author</label>
-        <input class="form-control" id="Author" name="Author" placeholder="Enter author" type="text">
+        {{form.author}}
     </div>
     <div class="mb-3">
         <label class="form-label" for="tags">Tags</label>
-        <input class="form-control" id="tags" name="tags" placeholder="Enter Tags" type="text">
+       {{form.tags}}
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
