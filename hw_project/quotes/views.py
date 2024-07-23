@@ -67,3 +67,15 @@ def add_tag(request):
     else:
         form = TagForm()
     return render(request, 'quotes/add_tag.html', {'form': form})
+
+def author_info(request, author_id):
+    author = Author.objects.get(id=author_id)
+    return render(request, 'quotes/author_info.html', {'author': author})
+
+def quotes_by_tag(request, tag_id, page = 1):
+    tag = Tag.objects.get(id=tag_id)
+    quotes = Quote.objects.filter(tags=tag)
+    per_page = 10
+    paginator = Paginator(list(quotes), per_page)
+    quotes_on_page = paginator.page(page)
+    return render(request, 'quotes/index.html', context={'quotes': quotes_on_page})

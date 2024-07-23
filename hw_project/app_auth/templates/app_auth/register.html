@@ -1,6 +1,7 @@
 {% extends 'quotes/base.html' %}
 
-{% block body %}
+{% block content %}
+
 <div class="container mt-3">
     <h2>Register User</h2>
     {% if form.errors and form.non_field_errors %}
@@ -24,15 +25,15 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Password
-                {{ form.password_1 }}
+                {{ form.password1 }}
             </label>
-            <span>{{form.errors.password_1}}</span>
+            <span>{{form.errors.password1}}</span>
         </div>
         <div class="mb-3">
             <label class="form-label">Repeat Password
-                {{ form.password_2 }}
+                {{ form.password2 }}
             </label>
-            <span>{{form.errors.password_2}}</span>
+            <span>{{form.errors.password2}}</span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         <button type="reset" class="btn btn-secondary">Reset</button>

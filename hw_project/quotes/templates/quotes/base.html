@@ -16,21 +16,39 @@
                     <a href="/" style="text-decoration: none">Quotes to Scrape</a>
                 </h1>
             </div>
-            <div class="col-md-4">
-                <p>
+<!--            <div class="col-md-4">-->
+<!--                <p>-->
 
-                    <a href="/login" class="btn btn-primary">Signup</a>
-                    <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/login" class="btn btn-primary">Logout</a>
-                    <a class="btn btn-primary" href="{% url 'quotes:add_author' %}">Add Author</a>
-                    <a class="btn btn-primary" href="{% url 'quotes:add_quote' %}">Add Quote</a>
-                    <a class="btn btn-primary" href="{% url 'quotes:add_tag' %}">Add Tag</a>
+<!--                    <a href="auth/signup" class="btn btn-primary">Signup</a>-->
+<!--                    <a href="auth/signin" class="btn btn-primary">Login</a>-->
+<!--                    <a href="auth/logout" class="btn btn-primary">Logout</a>-->
+<!--                    <a class="btn btn-primary" href="{% url 'quotes:add_author' %}">Add Author</a>-->
+<!--                    <a class="btn btn-primary" href="{% url 'quotes:add_quote' %}">Add Quote</a>-->
+<!--                    <a class="btn btn-primary" href="{% url 'quotes:add_tag' %}">Add Tag</a>-->
 
 
-                </p>
-            </div>
+<!--                </p>-->
+<!--            </div>-->
         </div>
-
+<nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+    {% if user.is_authenticated %}
+    <ul>
+        <li><a class="btn btn-primary" href="{% url 'quotes:add_quote' %}">Add Quote</a></li>
+        <li><a class="btn btn-primary" href="{% url 'quotes:add_tag' %}">Add Tag</a></li>
+        <li><a class="btn btn-primary" href="{% url 'quotes:add_author' %}">Add Author</a></li>
+    </ul>
+    <ul>
+        <li>Welcome <b>{{ user.username }}!</b></li>
+        <li><a href="{% url 'app_auth:profile' %}" role="button">Profile</a></li>
+        <li><a href="{% url 'app_auth:logoutuser' %}" role="button">Logout</a></li>
+    </ul>
+    {% else %}
+    <ul>
+        <li><a href="{% url 'app_auth:signup' %}" role="button">Sign Up</a></li>
+        <li><a href="{% url 'app_auth:signin' %}" role="button">Login</a></li>
+    </ul>
+    {% endif %}
+</nav>
 
         {% block content %} {% endblock %}
 

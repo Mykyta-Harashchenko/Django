@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "quotes",
-    "users",
+    "app_auth",
 ]
 
 MIDDLEWARE = [
@@ -110,8 +110,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-LOGIN_URL = "users/login"
-LOGIN_REDIRECT_URL = 'users:profile'
+LOGIN_URL = "app_auth/login"
+LOGIN_REDIRECT_URL = 'app_auth:profile'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
