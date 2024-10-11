@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Author(models.Model):
-    fullname = models.CharField(max_length=50)
+    fullname = models.CharField(max_length=50, unique=True)
     born_date = models.CharField(max_length=50)
     born_location = models.CharField(max_length=150)
     description = models.TextField()
@@ -26,6 +26,7 @@ class Quote(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
+    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.quote

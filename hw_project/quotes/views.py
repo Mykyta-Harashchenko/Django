@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.urls import reverse
+import random
 
 from .models import Quote, Author, Tag
 from .utils import get_mongodb
@@ -9,9 +11,20 @@ from .forms import AuthorForm, QuoteForm, TagForm
 
 # Create your views here.
 def main(request, page=1):
-    # db = get_mongodb()
-    # quotes = db.quotes.find()
-    quotes = Quote.objects.all()
+    sort_by = request.GET.get('sort_by', 'created_at')
+
+    sort_by = request.GET.get('sort_by', 'created_at_desc')
+
+    if sort_by == 'created_at_asc':
+        quotes = Quote.objects.all().order_by('created_at')
+    elif sort_by == 'created_at_desc':
+        quotes = Quote.objects.all().order_by('-created_at')
+    elif sort_by == 'likes':
+        quotes = Quote.objects.all().order_by('-likes')
+    elif sort_by == 'quote':
+        quotes = Quote.objects.all().order_by('quote')
+    else:
+        quotes = Quote.objects.all().order_by('-created_at')
     per_page = 10
     paginator = Paginator(list(quotes), per_page)
     quotes_on_page = paginator.page(page)
@@ -57,6 +70,29 @@ def add_quote(request):
     else:
         form = QuoteForm()
     return render(request, 'quotes/add_quote.html', {'form': form})
+
+def search_quotes(request):
+    query = request.GET.get('q')
+    if query:
+        # Поиск по содержимому цитаты и автору
+        quotes = Quote.objects.filter(quote__icontains=query) | Quote.objects.filter(author__fullname__icontains=query)
+    else:
+        quotes = Quote.objects.all()
+    return render(request, 'quotes/search_results.html', {'quotes': quotes})
+
+
+def random_quote(request):
+    quote = random.choice(Quote.objects.all())
+
+    return render(request, 'quotes/random_quote.html', {'quote': quote})
+
+def like_quote(request, quote_id):
+    if request.method == "POST":
+        quote = get_object_or_404(Quote, id=quote_id)
+        quote.likes += 1
+        quote.save()
+        return JsonResponse({'likes': quote.likes})
+
 
 def add_tag(request):
     if request.method == 'POST':

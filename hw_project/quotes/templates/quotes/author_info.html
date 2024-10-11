@@ -1,22 +1,24 @@
 {% extends 'quotes/base.html' %}
 {% load extract %}
-{% block  content %}
+{% block content %}
 
-<div class="row">
-    <div class="col-md-8">
-        <h2 class="text" itemprop="text">
-            {{author.fullname}}
-        </h2>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="text-primary" itemprop="name">
+                {{ author.fullname }}
+            </h2>
 
-        <h3  class="text'">
-            {{author.born_date}}
-        </h3>
-        <h4 class="text">
-            {{author.born_location}}
-        </h4>
-        <p class="text">
-            {{author.description}}
-        </p>
+            <h3 class="text-secondary">
+                Born on: {{ author.born_date }}
+            </h3>
+            <h4 class="text-muted">
+                Location: {{ author.born_location }}
+            </h4>
+            <p class="text-justify">
+                {{ author.description }}
+            </p>
+        </div>
     </div>
 </div>
 

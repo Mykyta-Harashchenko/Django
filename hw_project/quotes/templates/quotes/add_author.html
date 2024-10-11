@@ -1,35 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Author</title>
-</head>
-<body>
 {% extends "quotes/base.html" %}
 
 {% block content %}
-
-<form method="POST" action="{% url 'quotes:add_author' %}">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label class="form-label" for="fullname">Fullname</label>
-        <input class="form-control" id="fullname" name="fullname" placeholder="Enter fullname" type="text">
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="born_date">Born date</label>
-        <input class="form-control" id="born_date" name="born_date" placeholder="Enter born date" type="text">
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="born_location">Born location</label>
-        <input class="form-control" id="born_location" name="born_location" placeholder="Enter born location" type="text">
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="description">Description</label>
-        <textarea class="form-control" id="description" name="description" placeholder="Enter description"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-    {% endblock %}
-</body>
-</html>
+<div class="container mt-5">
+    <h2 class="mb-4">Add a New Author</h2>
+    
+    <form method="POST" action="{% url 'quotes:add_author' %}">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label" for="fullname">Fullname</label>
+            <input class="form-control" id="fullname" name="fullname" placeholder="Enter fullname" type="text" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="born_date">Born Date</label>
+            <input class="form-control" id="born_date" name="born_date" placeholder="Enter born date (e.g., 14 March 1879)" type="text" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="born_location">Born Location</label>
+            <input class="form-control" id="born_location" name="born_location" placeholder="Enter born location (e.g., Ulm, Germany)" type="text" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter a brief description about the author" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

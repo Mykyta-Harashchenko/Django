@@ -1,44 +1,62 @@
 {% extends 'quotes/base.html' %}
 {% load extract %}
-{% block  content %}
 
+{% block content %}
 <div class="row">
     <div class="col-md-8">
-    {% for quote in quotes %}
-    <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
-        <span class="text" itemprop="text">
-            {{quote.quote}}
-        </span>
-        <span>by <small class="author" itemprop="author">{{quote.author}}</small>
-        <a href="/author/{{quote.author.id}}">(about)</a>
-        </span>
-        <div class="tags">
-            Tags:
-            {% for tag in quote.tags.all %}
-            <a class="tag" href="/tag/{{tag.id}}">{{tag.name}}</a>
-            {% endfor %}
+
+        <!-- Ссылки для сортировки -->
+        <div class="sorting-options mb-4 d-flex justify-content-between align-items-center">
+            <h2 class="h4">Sort Quotes By:</h2>
+            <div>
+                <a href="?sort_by=created_at_desc" class="btn btn-outline-primary me-2">Newest</a>
+                <a href="?sort_by=created_at_asc" class="btn btn-outline-secondary me-2">Oldest</a>
+                <a href="?sort_by=likes" class="btn btn-outline-success me-2">Likes</a>
+                <a href="?sort_by=quote" class="btn btn-outline-info">Quote</a>
+            </div>
         </div>
-    </div>
-    {% endfor %}
-    <nav>
-        <ul class="pager">
-            <li class="previous">
-                <a class='{% if not quotes.has_previous %} disabled {% endif %}'
-                   href="{% if quotes.has_previous %} {% url 'quotes:root_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
-                    <span aria-hidden="true">←</span> Previous
-                </a>
 
-            </li>
+        <!-- Список цитат -->
+        {% for quote in quotes %}
+        <div class="quote border rounded p-3 mb-4 shadow-sm" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <span class="text h5 d-block mb-2" itemprop="text">
+                "{{ quote.quote }}"
+            </span>
+            <span class="d-block mb-3">by
+                <small class="author text-muted" itemprop="author">{{ quote.author }}</small>
+                <a href="/author/{{ quote.author.id }}" class="text-decoration-none">(about)</a>
+            </span>
+            <div class="tags mb-3">
+                <span class="text-muted">Tags:</span>
+                {% for tag in quote.tags.all %}
+                <a class="badge bg-info text-dark" href="/tag/{{ tag.id }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-0">Likes: <span id="likes-count-{{ quote.id }}">{{ quote.likes }}</span></p>
+                </div>
+                <button id="like-button-{{ quote.id }}" class="btn btn-sm btn-outline-success" data-id="{{ quote.id }}">Like</button>
+            </div>
+        </div>
+        {% endfor %}
 
-            <li class="next">
-                <a class='{% if not quotes.has_next %} disabled {% endif %}'
-                   href="{% if quotes.has_next %} {% url 'quotes:root_paginate' quotes.next_page_number %} {% else %} # {% endif %}">
-                    Next <span aria-hidden="true">→</span></a>
-            </li>
+        <!-- Пагинация -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-between">
+                <li class="page-item {% if not quotes.has_previous %} disabled {% endif %}">
+                    <a class="page-link" href="{% if quotes.has_previous %} {% url 'quotes:root_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
+                        ← Previous
+                    </a>
+                </li>
+                <li class="page-item {% if not quotes.has_next %} disabled {% endif %}">
+                    <a class="page-link" href="{% if quotes.has_next %} {% url 'quotes:root_paginate' quotes.next_page_number %} {% else %} # {% endif %}">
+                        Next →
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-        </ul>
-    </nav>
     </div>
 </div>
-
 {% endblock %}
