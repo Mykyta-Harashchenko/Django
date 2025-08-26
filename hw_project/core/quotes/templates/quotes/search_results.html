@@ -1,0 +1,30 @@
+{% extends "quotes/base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Search Results</h2>
+    
+    {% if quotes %}
+        <div class="row">
+            {% for quote in quotes %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <p class="card-text">"{{ quote.text }}"</p>
+                            <h6 class="card-subtitle mb-2 text-muted">Author: {{ quote.author }}</h6>
+                            {% if quote.tags.all %}
+                                <div class="mt-2">
+                                    {% for tag in quote.tags.all %}
+                                        <span class="badge bg-secondary">{{ tag.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No quotes found for your search.</p>
+    {% endif %}
+</div>
+{% endblock %}
