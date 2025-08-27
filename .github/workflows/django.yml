@@ -54,10 +54,11 @@ jobs:
           poetry install
 
       - name: Run migrations
+        working-directory: hw_project
         run: |
-          cd hw_project
           poetry run python manage.py migrate --noinput
 
       - name: Run tests
+        working-directory: hw_project
         run: |
           poetry run pytest --maxfail=3 --disable-warnings -q
