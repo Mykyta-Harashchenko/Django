@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
-# Extending User Model Using a One-To-One Link
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(default='default_avatar.png', upload_to='profile_images')
 
     def __str__(self):
         return self.user.username
 
-    # resizing images
     def save(self, *args, **kwargs):
         super().save()
 

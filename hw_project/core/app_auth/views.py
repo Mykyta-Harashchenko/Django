@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 
-
+from core.app_auth.models import Profile
 from core.app_auth.forms import RegisterForm, ProfileForm
 
 
@@ -42,14 +42,15 @@ def login_view(request):
 
 @login_required
 def profile(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='app_auth:profile')
-
-    profile_form = ProfileForm(instance=request.user.profile)
+    else:
+        profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'app_auth/profile.html', {'profile_form': profile_form})
 
 @login_required

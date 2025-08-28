@@ -81,7 +81,6 @@ def add_quote(request):
 def search_quotes(request):
     query = request.GET.get('q')
     if query:
-        # Поиск по содержимому цитаты и автору
         quotes = Quote.objects.filter(quote__icontains=query) | Quote.objects.filter(author__fullname__icontains=query)
     else:
         quotes = Quote.objects.all()

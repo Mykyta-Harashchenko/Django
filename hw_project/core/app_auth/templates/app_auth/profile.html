@@ -1,0 +1,49 @@
+{% extends "quotes/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body text-center">
+                    <h3 class="card-title">👤 {{ user.username }}</h3>
+                    <p class="text-muted">Email: {{ user.email }}</p>
+
+                    {% if profile %}
+                        <p><strong>Full name:</strong> {{ profile.full_name }}</p>
+                        <p><strong>Bio:</strong> {{ profile.bio|default:"No bio yet" }}</p>
+                        <p><strong>Location:</strong> {{ profile.location|default:"Unknown" }}</p>
+                    {% endif %}
+
+                    <a href="{% url 'app_auth:logoutuser' %}" class="btn btn-danger mt-3">
+                        Logout
+                    </a>
+                </div>
+            </div>
+
+            {% if quotes %}
+            <div class="card shadow-lg rounded-3 mt-4">
+                <div class="card-header">
+                    <h4>Your Quotes</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for q in quotes %}
+                        <li class="list-group-item">
+                            <blockquote class="blockquote">
+                                <p>{{ q.quote }}</p>
+                                <footer class="blockquote-footer">{{ q.author.fullname }}</footer>
+                            </blockquote>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No quotes yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
