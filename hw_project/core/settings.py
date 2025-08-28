@@ -112,7 +112,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 LOGIN_URL = "app_auth/login"
 LOGIN_REDIRECT_URL = 'app_auth:profile'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'core/media'
 MEDIA_URL = '/media/'
 
 # Default primary key field type
