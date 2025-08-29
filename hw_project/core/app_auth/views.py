@@ -11,15 +11,40 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import User
 
 from core.app_auth.models import Profile
 from core.app_auth.forms import RegisterForm, ProfileForm
-
+from core.app_auth.tasks import send_reset_email
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'app_auth/password_reset.html'
     email_template_name = 'app_auth/password_reset_email.html'
     success_url=reverse_lazy('app_auth:password_reset_done')
+    
+    def form_valid(self, form):
+        user = form.get_users(form.cleaned_data['email'])
+        for u in user:
+            current_site = get_current_site(self.request)
+            context = {
+                'email': u.email,
+                'domain': current_site.domain,
+                'site_name': current_site.name,
+                'uid': urlsafe_base64_encode(force_bytes(u.pk)),
+                'token': default_token_generator.make_token(u),
+                'protocol': 'https' if self.request.is_secure() else 'http'
+            }
+            subject = 'Reset your password'
+            message = render_to_string(self.email_template_name, context)
+            send_reset_email.delay(subject, message, [u.email])
+        return super().form_valid(form)
 
 class RegisterView(View):
     template_name = 'app_auth/register.html'
