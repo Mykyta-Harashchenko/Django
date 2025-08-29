@@ -1,13 +1,25 @@
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
+from django.urls import reverse_lazy
 
 from core.app_auth.models import Profile
 from core.app_auth.forms import RegisterForm, ProfileForm
 
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'app_auth/password_reset.html'
+    email_template_name = 'app_auth/password_reset_email.html'
+    success_url=reverse_lazy('app_auth:password_reset_done')
 
 class RegisterView(View):
     template_name = 'app_auth/register.html'
