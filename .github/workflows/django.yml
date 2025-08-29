@@ -35,6 +35,8 @@ jobs:
       DJANGO_SETTINGS_MODULE: core.settings
       SECRET_KEY: test-secret-key
       DEBUG: "1"
+      CELERY_BROKER_URL: redis://localhost:6379/0
+      CELERY_RESULT_BACKEND: redis://localhost:6379/0
 
     steps:
       - uses: actions/checkout@v4
