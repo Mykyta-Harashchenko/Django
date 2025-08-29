@@ -1,6 +1,7 @@
+from django import forms
 from django.forms import CharField, ImageField, TextInput, FileInput, EmailInput, EmailField, PasswordInput, ModelForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from core.app_auth.models import Profile
 
 
@@ -29,3 +30,9 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar']
+        
+class CustomResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(label="Enter your email:", 
+                             max_length=254, 
+                             widget=forms.EmailInput(attrs={"class": "form-control", "placeholder":"Your email"}))
+    

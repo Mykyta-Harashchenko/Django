@@ -114,6 +114,9 @@ LOGIN_URL = "app_auth/login"
 LOGIN_REDIRECT_URL = 'app_auth:profile'
 MEDIA_ROOT = BASE_DIR / 'core/media'
 MEDIA_URL = '/media/'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@mysite.com"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
