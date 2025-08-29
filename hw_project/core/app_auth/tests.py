@@ -2,6 +2,7 @@ import pytest
 from core.app_auth.models import User
 from django.urls import reverse
 from django.core import mail
+from celery import current_app
 
 
 
@@ -34,3 +35,4 @@ def test_forgot_password_feature(client):
     assert user.email in email.to
     assert 'reset your password' in email.subject.lower() or 'password' in email.subject.lower()
     assert user.username in body
+    
